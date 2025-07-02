@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>塔羅人格計算器</title>
+  <style>
+    body {
+      background: url("images/wallpaper.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #ff8c00;
+      font-family: sans-serif;
+      padding: 2em;
+      text-align: center;
+    }
+    #result {
+      max-width: 600px;
+      margin: 2em auto;
+      line-height: 1.6;
+      padding: 1em;
+      border-radius: 0.5em;
+      background: transparent;
+    }
+    input {
+      padding: 0.5em;
+      font-size: 1em;
+    }
+    button {
+      padding: 0.5em 1em;
+      background: #ff8c00;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>塔羅人格計算器</h1>
+  <p>請輸入您的西元生日（例：19850426）：</p>
+  <input type="text" id="birth" maxlength="8">
+  <button onclick="showPersonality()">計算</button>
+
+  <div id="result"></div>
+
+  <script>
+    function calculatePersonalityNumber(birthStr) {
+      let sum = 0;
+      for (let char of birthStr) {
+        if (!isNaN(parseInt(char))) {
+          sum += parseInt(char);
+        }
+      }
+      while (sum > 9 && sum !== 11 && sum !== 22) {
+        sum = sum.toString().split('').reduce((a,b)=>a+parseInt(b),0);
+      }
+      return sum;
+    }
+
+    function getPersonalityDescription(num) {
+      const descriptions = {
+        1: "塔羅人格 ─ 魔術師<br>你聰明靈活，腦筋動得快，適應力強，善於開創新局，但有時易浮躁。<br><b>人生課題：</b>學會先認識自己，穩住內心。",
+        2: "塔羅人格 ─ 女祭司<br>你直覺敏銳，心思細膩，善於觀察，但有時過於退縮。<br><b>人生課題：</b>學會敞開心胸。",
+        3: "塔羅人格 ─ 皇后<br>你溫柔體貼，樂於照顧他人，但有時過於委屈自己。<br><b>人生課題：</b>學會愛別人的同時，也愛自己。",
+        4: "塔羅人格 ─ 皇帝<br>你穩重可靠，有責任感，但有時過於固執。<br><b>人生課題：</b>學會柔軟。",
+        5: "塔羅人格 ─ 教皇<br>你智慧深沉，樂於助人，但有時過於嚴格。<br><b>人生課題：</b>學會放寬標準。",
+        6: "塔羅人格 ─ 戀人<br>你重情重義，重視親密關係，但有時容易失去自我。<br><b>人生課題：</b>學會在愛裡保有自己。",
+        7: "塔羅人格 ─ 戰車<br>你意志堅定，勇於挑戰，但有時忽略他人感受。<br><b>人生課題：</b>學會關心身邊的人。",
+        8: "塔羅人格 ─ 力量<br>你外柔內剛，心裡比誰都勇敢，面對困境總能默默撐住，給人安全感。你有溫柔的力量，不喜衝突卻不怕挑戰。只是有時太壓抑情緒，讓自己太辛苦。<br><b>人生課題：</b>學會適時表達自己的感受，脆弱也是力量。",
+        9: "塔羅人格 ─ 隱士<br>你喜歡獨處，內心世界豐富，但有時過於封閉。<br><b>人生課題：</b>學會分享你的溫暖和光。"
+      };
+      return descriptions[num] || "暫無對應的塔羅人格說明。";
+    }
+
+    function showPersonality() {
+      const birth = document.getElementById('birth').value.trim();
+      if (!/^[0-9]{8}$/.test(birth)) {
+        document.getElementById('result').innerHTML = "請輸入正確格式 (8位數字)。";
+        return;
+      }
+      const num = calculatePersonalityNumber(birth);
+      const desc = getPersonalityDescription(num);
+      document.getElementById('result').innerHTML = `人格數字：${num}<br>${desc}`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>線上抽牌</title>
+  <style>
+	  
+  body {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+              url("images/background.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: orange;
+  font-family: sans-serif;
+  text-align: center;
+  padding: 2em;
+}
+
+    body {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+  url("images/wallpaper.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: orange;
+  font-family: sans-serif;
+  text-align: center;
+  padding: 2em;
+      background-color: black;
+      color: orange;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2em;
+    }
+    .tarot-button {
+      display: block;
+      background: #111;
+      color: orange;
+      border: 1px solid orange;
+      border-radius: 0.5em;
+      padding: 1em;
+      margin: 1em auto;
+      max-width: 300px;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .tarot-button:hover {
+      background: orange;
+      color: black;
+    }
+    #result {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5em;
+    }
+    .card-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #111;
+      border: 1px solid rgba(255, 165, 0, 0.3);
+      border-radius: 0.5em;
+      padding: 0.5em;
+    }
+    .tarot-card {
+      max-height: 300px;
+    }
+    .word-card {
+      max-width: 150px;
+    }
+    .card-name {
+      margin-top: 0.3em;
+      font-size: 0.9em;
+    }
+    .overlay {
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    .modal {
+      background: #222;
+      border: 1px solid orange;
+      padding: 2em;
+      border-radius: 0.5em;
+      color: orange;
+      max-width: 300px;
+      text-align: center;
+    }
+    .modal button {
+      margin-top: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>線上抽牌</h1>
+  <a href="#" class="tarot-button" onclick="showPrompt(drawTimeFlow)">塔羅牌時間流</a>
+  <a href="#" class="tarot-button" onclick="showPrompt(drawNoSpread)">塔羅牌無牌陣</a>
+  <a href="#" class="tarot-button" onclick="showPrompt(drawWordCards)">字卡抽取</a>
+  <a href="#" class="tarot-button" onclick="showPrompt(drawTimeCard)">時間卡抽取</a>
+  <a href="#" class="tarot-button" onclick="showPrompt(drawYesNo)">YES / NO 抽取</a>
+
+  <div id="result"></div>
+
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <p>請靜心默想您要詢問的問題。<br>當準備好後請點擊「開始抽牌」。</p>
+      <button onclick="runPendingFunc()">開始抽牌</button>
+    </div>
+  </div>
+
+  <script>
+    let pendingFunc = null;
+
+    const tarotDeck = [
+  { file: "images/tarot/00.jpg", name: "愚者" },
+  { file: "images/tarot/01.jpg", name: "魔術師" },
+  { file: "images/tarot/02.jpg", name: "女祭司" },
+  { file: "images/tarot/03.jpg", name: "女皇" },
+  { file: "images/tarot/04.jpg", name: "皇帝" },
+  { file: "images/tarot/05.jpg", name: "教皇" },
+  { file: "images/tarot/06.jpg", name: "戀人" },
+  { file: "images/tarot/07.jpg", name: "戰車" },
+  { file: "images/tarot/08.jpg", name: "力量" },
+  { file: "images/tarot/09.jpg", name: "隱者" },
+  { file: "images/tarot/10.jpg", name: "命運之輪" },
+  { file: "images/tarot/11.jpg", name: "正義" },
+  { file: "images/tarot/12.jpg", name: "倒吊人" },
+  { file: "images/tarot/13.jpg", name: "死神" },
+  { file: "images/tarot/14.jpg", name: "節制" },
+  { file: "images/tarot/15.jpg", name: "惡魔" },
+  { file: "images/tarot/16.jpg", name: "高塔" },
+  { file: "images/tarot/17.jpg", name: "星星" },
+  { file: "images/tarot/18.jpg", name: "月亮" },
+  { file: "images/tarot/19.jpg", name: "太陽" },
+  { file: "images/tarot/20.jpg", name: "審判" },
+  { file: "images/tarot/21.jpg", name: "世界" },
+
+  // 聖杯
+  { file: "images/tarot/Cups01.jpg", name: "聖杯一" },
+  { file: "images/tarot/Cups02.jpg", name: "聖杯二" },
+  { file: "images/tarot/Cups03.jpg", name: "聖杯三" },
+  { file: "images/tarot/Cups04.jpg", name: "聖杯四" },
+  { file: "images/tarot/Cups05.jpg", name: "聖杯五" },
+  { file: "images/tarot/Cups06.jpg", name: "聖杯六" },
+  { file: "images/tarot/Cups07.jpg", name: "聖杯七" },
+  { file: "images/tarot/Cups08.jpg", name: "聖杯八" },
+  { file: "images/tarot/Cups09.jpg", name: "聖杯九" },
+  { file: "images/tarot/Cups10.jpg", name: "聖杯十" },
+  { file: "images/tarot/Cups11.jpg", name: "聖杯侍者" },
+  { file: "images/tarot/Cups12.jpg", name: "聖杯騎士" },
+  { file: "images/tarot/Cups13.jpg", name: "聖杯皇后" },
+  { file: "images/tarot/Cups14.jpg", name: "聖杯國王" },
+
+  // 錢幣
+  { file: "images/tarot/Pents01.jpg", name: "錢幣一" },
+  { file: "images/tarot/Pents02.jpg", name: "錢幣二" },
+  { file: "images/tarot/Pents03.jpg", name: "錢幣三" },
+  { file: "images/tarot/Pents04.jpg", name: "錢幣四" },
+  { file: "images/tarot/Pents05.jpg", name: "錢幣五" },
+  { file: "images/tarot/Pents06.jpg", name: "錢幣六" },
+  { file: "images/tarot/Pents07.jpg", name: "錢幣七" },
+  { file: "images/tarot/Pents08.jpg", name: "錢幣八" },
+  { file: "images/tarot/Pents09.jpg", name: "錢幣九" },
+  { file: "images/tarot/Pents10.jpg", name: "錢幣十" },
+  { file: "images/tarot/Pents11.jpg", name: "錢幣侍者" },
+  { file: "images/tarot/Pents12.jpg", name: "錢幣騎士" },
+  { file: "images/tarot/Pents13.jpg", name: "錢幣皇后" },
+  { file: "images/tarot/Pents14.jpg", name: "錢幣國王" },
+
+  // 寶劍
+  { file: "images/tarot/Swords01.jpg", name: "寶劍一" },
+  { file: "images/tarot/Swords02.jpg", name: "寶劍二" },
+  { file: "images/tarot/Swords03.jpg", name: "寶劍三" },
+  { file: "images/tarot/Swords04.jpg", name: "寶劍四" },
+  { file: "images/tarot/Swords05.jpg", name: "寶劍五" },
+  { file: "images/tarot/Swords06.jpg", name: "寶劍六" },
+  { file: "images/tarot/Swords07.jpg", name: "寶劍七" },
+  { file: "images/tarot/Swords08.jpg", name: "寶劍八" },
+  { file: "images/tarot/Swords09.jpg", name: "寶劍九" },
+  { file: "images/tarot/Swords10.jpg", name: "寶劍十" },
+  { file: "images/tarot/Swords11.jpg", name: "寶劍侍者" },
+  { file: "images/tarot/Swords12.jpg", name: "寶劍騎士" },
+  { file: "images/tarot/Swords13.jpg", name: "寶劍皇后" },
+  { file: "images/tarot/Swords14.jpg", name: "寶劍國王" },
+
+  // 權杖
+  { file: "images/tarot/Wands01.jpg", name: "權杖一" },
+  { file: "images/tarot/Wands02.jpg", name: "權杖二" },
+  { file: "images/tarot/Wands03.jpg", name: "權杖三" },
+  { file: "images/tarot/Wands04.jpg", name: "權杖四" },
+  { file: "images/tarot/Wands05.jpg", name: "權杖五" },
+  { file: "images/tarot/Wands06.jpg", name: "權杖六" },
+  { file: "images/tarot/Wands07.jpg", name: "權杖七" },
+  { file: "images/tarot/Wands08.jpg", name: "權杖八" },
+  { file: "images/tarot/Wands09.jpg", name: "權杖九" },
+  { file: "images/tarot/Wands10.jpg", name: "權杖十" },
+  { file: "images/tarot/Wands11.jpg", name: "權杖侍者" },
+  { file: "images/tarot/Wands12.jpg", name: "權杖騎士" },
+  { file: "images/tarot/Wands13.jpg", name: "權杖皇后" },
+  { file: "images/tarot/Wands14.jpg", name: "權杖國王" }
+];
+
+    const wordDeck = [
+      "images/wordcards/01.png",
+      "images/wordcards/02.png",
+	  "images/wordcards/03.png",
+	  "images/wordcards/04.png",
+      "images/wordcards/05.png",
+	  "images/wordcards/06.png",
+	  "images/wordcards/07.png",
+      "images/wordcards/08.png",
+	  "images/wordcards/09.png",
+	  "images/wordcards/10.png",
+      "images/wordcards/11.png",
+	  "images/wordcards/12.png",
+      "images/wordcards/13.png",
+      "images/wordcards/14.png",
+	  "images/wordcards/15.png",
+	  "images/wordcards/16.png",
+      "images/wordcards/17.png",
+	  "images/wordcards/18.png",
+	  "images/wordcards/19.png",
+      "images/wordcards/20.png",
+	  "images/wordcards/21.png",
+	  "images/wordcards/22.png",
+      "images/wordcards/23.png",
+	  "images/wordcards/24.png",
+      "images/wordcards/25.png",
+      "images/wordcards/26.png",
+	  "images/wordcards/27.png",
+	  "images/wordcards/28.png",
+      "images/wordcards/29.png",
+	  "images/wordcards/30.png",
+	  "images/wordcards/31.png",
+      "images/wordcards/32.png",
+	  "images/wordcards/33.png",
+	  "images/wordcards/34.png",
+      "images/wordcards/35.png",
+	  "images/wordcards/36.png",
+      "images/wordcards/37.png",
+      "images/wordcards/38.png",
+	  "images/wordcards/39.png",
+	  "images/wordcards/40.png",
+      "images/wordcards/41.png",
+	  "images/wordcards/42.png",
+	  "images/wordcards/43.png",
+      "images/wordcards/44.png",
+	  "images/wordcards/45.png",
+	  "images/wordcards/46.png",
+      "images/wordcards/47.png",
+	  "images/wordcards/48.png"
+    ];
+    const timeDeck = [
+      "images/timecards/01.png",
+	  "images/timecards/02.png",
+	  "images/timecards/03.png",
+	  "images/timecards/04.png",
+	  "images/timecards/05.png",
+	  "images/timecards/06.png",
+	  "images/timecards/07.png",
+      "images/timecards/08.png"
+    ];
+    const yesNoDeck = [
+      "images/yesno/yes.png",
+      "images/yesno/no.png"
+    ];
+
+    function showPrompt(func) {
+      pendingFunc = func;
+      document.getElementById("overlay").style.display = "flex";
+    }
+
+    function runPendingFunc() {
+      document.getElementById("overlay").style.display = "none";
+      if (pendingFunc) {
+        pendingFunc();
+        pendingFunc = null;
+      }
+    }
+
+    function drawTimeFlow() {
+      drawTarotCards(3);
+    }
+
+    function drawNoSpread() {
+      drawTarotCards(5);
+    }
+
+    function drawTarotCards(count) {
+      let deckCopy = [...tarotDeck];
+      let html = '';
+      for (let i = 0; i < count; i++) {
+        const index = Math.floor(Math.random() * deckCopy.length);
+        const card = deckCopy.splice(index, 1)[0];
+        const isReversed = Math.random() < 0.5;
+        html += `<div class=\"card-block\">
+                    <img src=\"${card.file}\" class=\"tarot-card\" style=\"transform: rotate(${isReversed ? '180deg' : '0deg'});\">
+                    <div class=\"card-name\">${card.name} - ${isReversed ? '逆位' : '正位'}</div>
+                 </div>`;
+      }
+      document.getElementById("result").innerHTML = html;
+    }
+
+    function drawWordCards() {
+      let deckCopy = [...wordDeck];
+      let html = '';
+      for (let i = 0; i < 5; i++) {
+        const index = Math.floor(Math.random() * deckCopy.length);
+        const file = deckCopy.splice(index, 1)[0];
+        html += `<div class=\"card-block\">
+                    <img src=\"${file}\" class=\"word-card\">
+                 </div>`;
+      }
+      document.getElementById("result").innerHTML = html;
+    }
+
+    function drawTimeCard() {
+      const index = Math.floor(Math.random() * timeDeck.length);
+      const file = timeDeck[index];
+      document.getElementById("result").innerHTML = `<div class=\"card-block\">
+                    <img src=\"${file}\" class=\"word-card\">
+                  </div>`;
+    }
+
+    function drawYesNo() {
+      const index = Math.floor(Math.random() * yesNoDeck.length);
+      const file = yesNoDeck[index];
+      document.getElementById("result").innerHTML = `<div class=\"card-block\">
+                    <img src=\"${file}\" class=\"word-card\">
+                  </div>`;
+    }
+  </script>
+</body>
+</html>
