@@ -4,56 +4,64 @@
   <meta charset="UTF-8">
   <title>時間占卜</title>
   <style>
-    body {
-      background-color: black;
-      color: orange;
-      font-family: sans-serif;
-      text-align: center;
-      padding: 2em;
-    }
-    .tarot-button {
-      display: inline-block;
-      background: #111;
-      color: orange;
-      border: 1px solid orange;
-      border-radius: 0.5em;
-      padding: 0.5em 1em;
-      margin: 0.5em;
-      max-width: 200px;
-      font-size: 1em;
-      text-decoration: none;
-      transition: background 0.3s, color 0.3s, transform 0.2s;
-    }
-    .tarot-button:hover {
-      background: orange;
-      color: black;
-      transform: scale(1.05);
-    }
-    #result {
-      margin-top: 2em;
-      font-size: 1.2em;
-      border: 1px solid orange;
-      padding: 1em;
-      border-radius: 0.5em;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-      white-space: pre-line;
-      opacity: 1;
-      transition: opacity 0.3s;
-    }
-    .flash {
-      animation: flash 0.6s;
-    }
-    @keyframes flash {
-      0% { opacity: 0.2; }
-      50% { opacity: 1; }
-      100% { opacity: 0.2; }
-    }
-    .sec {
-      font-size: 2em;
-      font-weight: bold;
-    }
+body {
+  background: url("images/wallpaper.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: orange;
+  font-family: sans-serif;
+  text-align: center;
+  padding: 2em;
+  margin: 0;
+}
+
+.tarot-button {
+  display: inline-block;
+  background: rgba(17, 17, 17, 0.8); /* 半透明按鈕搭背景圖 */
+  color: orange;
+  border: 1px solid orange;
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  margin: 0.5em;
+  max-width: 200px;
+  font-size: 1em;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+.tarot-button:hover {
+  background: orange;
+  color: black;
+  transform: scale(1.05);
+}
+
+#result {
+  margin-top: 2em;
+  font-size: 1.2em;
+  padding: 1em;
+  border-radius: 0.5em;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  white-space: pre-line;
+  background: rgba(0, 0, 0, 0.5); /* 結果區塊微透明底，不用邊框了 */
+  transition: opacity 0.3s;
+}
+
+.flash {
+  animation: flash 0.6s;
+}
+
+@keyframes flash {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+.sec {
+  font-size: 2em;
+  font-weight: bold;
+}
+
   </style>
 </head>
 <body>
