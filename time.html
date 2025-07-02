@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>時間占卜</title>
+  <style>
+    body {
+      background-color: black;
+      color: orange;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2em;
+    }
+    .tarot-button {
+      display: inline-block;
+      background: #111;
+      color: orange;
+      border: 1px solid orange;
+      border-radius: 0.5em;
+      padding: 0.5em 1em;
+      margin: 0.5em;
+      max-width: 200px;
+      font-size: 1em;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+    }
+    .tarot-button:hover {
+      background: orange;
+      color: black;
+      transform: scale(1.05);
+    }
+    #result {
+      margin-top: 2em;
+      font-size: 1.2em;
+      border: 1px solid orange;
+      padding: 1em;
+      border-radius: 0.5em;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      white-space: pre-line;
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+    .flash {
+      animation: flash 0.6s;
+    }
+    @keyframes flash {
+      0% { opacity: 0.2; }
+      50% { opacity: 1; }
+      100% { opacity: 0.2; }
+    }
+    .sec {
+      font-size: 2em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>時間占卜</h1>
+  <p>深呼吸，靜心一下，默想問題後請點擊「開始占卜」。</p>
+  <a href="#" class="tarot-button" onclick="drawTime()">開始占卜</a>
+  <div id="result"></div>
+
+  <script>
+    const qianwen = [
+      "【00】別急，再試一次就好。每個開始都值得被鼓勵。",
+      "【01】答案藏在心裡的光裡，不必遠尋。",
+      "【02】換個角度看，世界會比想像更寬闊。",
+      "【03】決定前，靜心片刻，問自己：這是內心真正的渴望嗎？",
+      "【04】接納每個不完美的自己。這份勇氣就是力量。",
+      "【05】放下過去，向新風景邁進。腳下的路正慢慢展開。",
+      "【06】停一停，深呼吸。時間在等你，世界也在等你。",
+      "【07】當準備好了，時機自然會到來。",
+      "【08】付出愛，也溫柔接受愛。這是生命最美的循環。",
+      "【09】放慢腳步，讓答案從心底浮現。",
+      "【10】別被混亂的念頭困住，靜下來，一切會清晰。",
+      "【11】好事正悄悄靠近，記得敞開心迎接。",
+      "【12】不合時宜的路，就勇敢轉身，新的方向會出現。",
+      "【13】等待的花終會開，別急，它正在醞釀美麗。",
+      "【14】多傾聽內心的聲音，答案早已在心裡發芽。",
+      "【15】走出去，世界比想像溫柔許多。",
+      "【16】選擇了，就專注走下去，每一步都值得。",
+      "【17】相信自己，正一步步走向光明。",
+      "【18】夢想不在遠方，而在當下的每個行動裡。",
+      "【19】有時繞路，是為了看到不同的風景。",
+      "【20】困難會過去，堅持的心會帶你走出去。",
+      "【21】平靜是最深的力量，讓心與自己連結。",
+      "【22】成功來自堅持、信念與真心。",
+      "【23】幸福已在路上，請帶著期待前行。",
+      "【24】釐清真正渴望的事物，心就不再徬徨。",
+      "【25】直覺是溫柔的引路人，請留意它的提醒。",
+      "【26】謹慎選擇，不隨波逐流，才能走出自己的路。",
+      "【27】放下控制的執念，信任流動中的安排。",
+      "【28】出於愛的願望，宇宙會回應與成全。",
+      "【29】保持平衡，讓身心靈在和諧中前行。",
+      "【30】自信不是張揚，而是相信自己能做到。",
+      "【31】黑夜之後，就是晨光，困難也有盡頭。",
+      "【32】真誠付出，最終都會回到生命裡。",
+      "【33】放鬆，時間會讓一切答案慢慢明朗。",
+      "【34】專注正念，正向的事物自然聚集而來。",
+      "【35】用幽默看待波折，笑聲也是一種智慧。",
+      "【36】放下不合時宜的執念，迎接新的可能。",
+      "【37】一念之間，就是跨越不可能的起點。",
+      "【38】耐心是最美的力量，等待會開出花。",
+      "【39】放手一廂情願的執著，選擇屬於自己的自由。",
+      "【40】新的機會正在路上，請張開心去迎接。",
+      "【41】別抗拒情緒，它是來幫助你理解自己的。",
+      "【42】持續專注，不急於立刻看見成果。",
+      "【43】停下來休息，是為了走得更遠。",
+      "【44】發光不是特權，只要準備好，夢想會靠近。",
+      "【45】時機未到，不妨靜心等待。路還長，慢慢走。",
+      "【46】承認、接納、學習，成長從此開始。",
+      "【47】勇敢改變，為生活添一抹新色彩。",
+      "【48】珍惜已有的，感謝生活裡的每份善意。",
+      "【49】喜事將至，請以喜悅之心迎接。",
+      "【50】多觀察、多學習，智慧來自多方的融合。",
+      "【51】平靜中生出的念頭，往往最真。",
+      "【52】一步步來，穩健是最好的捷徑。",
+      "【53】不放棄，困境終會過去，光明正在靠近。",
+      "【54】努力不會白費，成長就是最大的收穫。",
+      "【55】生命會以相同的溫度回應每一份付出。",
+      "【56】重要的不是結果，而是成為更好的自己。",
+      "【57】善意地接受幫助，也大方地付出溫暖。",
+      "【58】豐盛從感恩與分享開始，匱乏從抱怨開始。",
+      "【59】困難是一份禮物，只等被你打開。"
+    ];
+
+    function drawTime() {
+      const now = new Date();
+      const sec = now.getSeconds();
+      const text = qianwen[sec] || qianwen[0];
+      const result = document.getElementById("result");
+      result.innerHTML = `當下秒數：<span class="sec">${sec}</span>\n${text}`;
+      result.classList.remove("flash");
+      void result.offsetWidth; // 觸發重排以重新啟動動畫
+      result.classList.add("flash");
+    }
+  </script>
+</body>
+</html>
