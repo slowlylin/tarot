@@ -17,18 +17,19 @@
       height: auto;
     }
 .tarot-button {
-  display: inline-block;
+  display: block; /* 重點：改回 block 就會直排 */
   background: #111;
   color: orange;
   border: 1px solid orange;
   border-radius: 0.5em;
   padding: 0.5em 1em;
-  margin: 0.5em;
+  margin: 0.5em auto; /* auto 讓按鈕置中 */
   max-width: 200px;
   font-size: 1em;
   text-decoration: none;
   transition: background 0.3s, color 0.3s, transform 0.2s;
 }
+
 
 .tarot-button:hover {
   background: orange;
