@@ -44,18 +44,19 @@
   <div id="result"></div>
 
   <script>
-    function calculatePersonalityNumber(birthStr) {
-      let sum = 0;
-      for (let char of birthStr) {
-        if (!isNaN(parseInt(char))) {
-          sum += parseInt(char);
-        }
-      }
-      while (sum > 9 && sum !== 11 && sum !== 22) {
-        sum = sum.toString().split('').reduce((a,b)=>a+parseInt(b),0);
-      }
-      return sum;
+function calculatePersonalityNumber(birthStr) {
+  let sum = 0;
+  for (let char of birthStr) {
+    if (!isNaN(parseInt(char))) {
+      sum += parseInt(char);
     }
+  }
+  // 總和一直加到個位數（1~9）
+  while (sum > 9) {
+    sum = sum.toString().split('').reduce((a, b) => a + parseInt(b), 0);
+  }
+  return sum;
+}
 
     function getPersonalityDescription(num) {
       const descriptions = {
