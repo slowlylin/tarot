@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>占星骰子占卜</title>
+  <style>
+    body {
+      background: url("images/wallpaper.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: orange;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2em;
+      margin: 0;
+    }
+    .tarot-button {
+      display: inline-block;
+      background: rgba(17,17,17,0.8);
+      color: orange;
+      border: 1px solid orange;
+      border-radius: 0.5em;
+      padding: 0.5em 1em;
+      margin: 0.5em;
+      max-width: 200px;
+      font-size: 1em;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+    }
+    .tarot-button:hover {
+      background: orange;
+      color: black;
+      transform: scale(1.05);
+      text-decoration: none;
+    }
+#result {
+  display: none;
+  margin-top: 2em;
+  font-size: 1.2em;
+  background: none;
+  padding: 1em;
+  border-radius: 0.5em;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  white-space: pre-line;
+  line-height: 1.5; /* 調整行距 */
+}
+
+  </style>
+</head>
+<body>
+  <h1>占星骰子占卜</h1>
+  <p>深呼吸，靜心一下，點擊「開始占卜」隨機生成占星指引。</p>
+  <a href="#" class="tarot-button" onclick="rollDice()">開始占卜</a>
+  <div id="result"></div>
+
+  <script>
+    const planets = [
+      { name: "太陽", desc: "自我、光明、生命力" },
+      { name: "月亮", desc: "情感、直覺、內在需求" },
+      { name: "水星", desc: "思考、溝通、表達" },
+      { name: "金星", desc: "愛、美感、關係" },
+      { name: "火星", desc: "行動力、勇氣、慾望" },
+      { name: "木星", desc: "成長、幸運、擴展" },
+      { name: "土星", desc: "責任、限制、紀律" },
+      { name: "天王星", desc: "變革、獨立、突破" },
+      { name: "海王星", desc: "夢想、直覺、混沌" },
+      { name: "冥王星", desc: "轉化、深層力量、重生" }
+    ];
+
+    const signs = [
+      { name: "白羊座", desc: "衝動、熱情、冒險" },
+      { name: "金牛座", desc: "穩重、實在、耐心" },
+      { name: "雙子座", desc: "靈活、機智、好奇" },
+      { name: "巨蟹座", desc: "敏感、溫暖、保護" },
+      { name: "獅子座", desc: "自信、創造、榮耀" },
+      { name: "處女座", desc: "細膩、實用、謹慎" },
+      { name: "天秤座", desc: "公正、和諧、關係" },
+      { name: "天蠍座", desc: "深情、神秘、轉化" },
+      { name: "射手座", desc: "自由、樂觀、探索" },
+      { name: "摩羯座", desc: "務實、堅毅、責任" },
+      { name: "水瓶座", desc: "創新、友善、獨立" },
+      { name: "雙魚座", desc: "夢想、同情、直覺" }
+    ];
+
+    const houses = [
+      { name: "第一宮", desc: "自我、形象、外在表現" },
+      { name: "第二宮", desc: "價值、金錢、資源" },
+      { name: "第三宮", desc: "溝通、學習、短途旅行" },
+      { name: "第四宮", desc: "家庭、根基、內在安全" },
+      { name: "第五宮", desc: "創造力、戀愛、子女" },
+      { name: "第六宮", desc: "工作、健康、日常責任" },
+      { name: "第七宮", desc: "伴侶、合作、公開關係" },
+      { name: "第八宮", desc: "深層連結、轉化、共享資源" },
+      { name: "第九宮", desc: "高等學習、哲學、遠行" },
+      { name: "第十宮", desc: "事業、名聲、社會地位" },
+      { name: "第十一宮", desc: "朋友、社群、願景" },
+      { name: "第十二宮", desc: "潛意識、隱秘、靈性" }
+    ];
+
+    function rollDice() {
+      const planet = planets[Math.floor(Math.random() * planets.length)];
+      const sign = signs[Math.floor(Math.random() * signs.length)];
+      const house = houses[Math.floor(Math.random() * houses.length)];
+
+      let counter = 0;
+      const resultDiv = document.getElementById("result");
+      resultDiv.style.display = "block";
+
+      const animation = setInterval(() => {
+        resultDiv.innerHTML =
+          `行星：${planets[Math.floor(Math.random() * planets.length)].name}<br>` +
+          `星座：${signs[Math.floor(Math.random() * signs.length)].name}<br>` +
+          `宮位：${houses[Math.floor(Math.random() * houses.length)].name}<br>`;
+        counter++;
+        if (counter > 10) { // 動畫閃爍次數
+          clearInterval(animation);
+          resultDiv.innerHTML =
+            `行星：${planet.name}（${planet.desc}）<br>` +
+            `星座：${sign.name}（${sign.desc}）<br>` +
+            `宮位：${house.name}（${house.desc}）<br>` +
+            `提示：此時的主題圍繞「${planet.desc}」，透過「${sign.desc}」特質，在「${house.desc}」領域發揮影響。`;
+        }
+      }, 100);
+    }
+  </script>
+</body>
+</html>
