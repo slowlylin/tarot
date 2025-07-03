@@ -7,11 +7,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh; /* 改成 min-height 更穩定 */
 }
 
 .container {
   text-align: center;
+  padding: 1em; /* 手機邊緣留白 */
 }
 
 h1 {
@@ -36,4 +37,21 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+/* 響應式手機優化 */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5em;
+  }
+
+  a {
+    font-size: 1.2em;
+    display: inline-block;
+    padding: 0.5em 1em;
+  }
+
+  .container {
+    padding: 1em;
+  }
 }
