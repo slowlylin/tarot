@@ -68,13 +68,24 @@ const flowyearData = {
 function calculateFlowyear() {
   let input = document.getElementById('birthday').value;
   input = input.replace(/[^0-9]/g, '');
-  let sum = 0;
-  for (let digit of input) {
-    sum += parseInt(digit);
+  
+  if (input.length !== 8) {
+    document.getElementById('result').innerHTML = '請輸入完整8碼西元年月日，例如20250524';
+    return;
   }
-  while (sum > 21) {
+
+  let year = parseInt(input.substr(0, 4));
+  let month = parseInt(input.substr(4, 2));
+  let day = parseInt(input.substr(6, 2));
+
+  let sum = year + month + day;
+
+  // 拆位數相加到 <=22
+  sum = sum.toString().split('').reduce((a, b) => a + parseInt(b), 0);
+  while (sum > 22) {
     sum = sum.toString().split('').reduce((a, b) => a + parseInt(b), 0);
   }
+
   const text = flowyearData[sum] || `無對應資料 (流年數：${sum})`;
   document.getElementById('result').innerHTML = text.replace(/\\n/g, '<br>');
 }
