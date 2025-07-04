@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每日運勢</title>
+  <style>
+    body {
+      background: #000;
+      color: orange;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2em;
+    }
+    button {
+      padding: 0.5em 1em;
+      background: #111;
+      color: orange;
+      border: 1px solid orange;
+      border-radius: 0.5em;
+      cursor: pointer;
+      font-size: 1.2em;
+      margin: 0.5em;
+    }
+    button:hover {
+      background: orange;
+      color: black;
+    }
+    .result {
+      text-align: left;
+      margin-top: 1em;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      white-space: pre-line;
+      line-height: 1.8;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>每日運勢</h1>
+  <button onclick="dailyFortune()">抽取今日運勢</button>
+  <div class="result" id="result"></div>
+
+  <script>
+const suitEmoji = { "紅心": "❤️", "方塊": "♦️", "梅花": "♣️", "黑桃": "♠️" };
+const dailyMeanings = {
+  "紅心A": "今天絕對會出現好事，主動出擊可能會成功。",
+  "紅心2": "喜歡的人將會出現，也會知道最重要的對象是誰。",
+  "紅心3": "小心危險型男生，即使告白也別輕信。",
+  "紅心4": "可能有短暫戀情，也可能摔一跤。",
+  "紅心5": "喜歡的人將會出現，也會知道最重要的對象是誰。",
+  "紅心6": "小心危險型男生，即使告白也別輕信。",
+  "紅心7": "可能有短暫戀情，也可能摔一跤。",
+  "紅心8": "喜歡的人將會出現，也會知道最重要的對象是誰。",
+  "紅心9": "小心危險型男生，即使告白也別輕信。",
+  "紅心10": "可能有短暫戀情，也可能摔一跤。",
+  "紅心J": "小心危險型男生，即使告白也別輕信。",
+  "紅心Q": "喜歡的人將會出現，也會知道最重要的對象是誰。",
+  "紅心K": "可能有短暫戀情，也可能摔一跤。",
+  "梅花A": "考試猜題命中率高，朋友關係也很好。",
+  "梅花2": "數理不順利，但感激朋友貼心舉動。",
+  "梅花3": "研讀計劃順利，發現新遊樂趣。",
+  "梅花4": "小心對朋友說話太嚴厲。",
+  "梅花5": "數理不順利，但感激朋友貼心舉動。",
+  "梅花6": "研讀計劃順利，發現新遊樂趣。",
+  "梅花7": "小心對朋友說話太嚴厲。",
+  "梅花8": "數理不順利，但感激朋友貼心舉動。",
+  "梅花9": "研讀計劃順利，發現新遊樂趣。",
+  "梅花10": "小心對朋友說話太嚴厲。",
+  "梅花J": "研讀計劃順利，發現新遊樂趣。",
+  "梅花Q": "數理不順利，但感激朋友貼心舉動。",
+  "梅花K": "小心對朋友說話太嚴厲。",
+  "方塊A": "金錢運佳，隨時會有意外收入。",
+  "方塊2": "小心被敲詐或借錢。",
+  "方塊3": "眼睜睜看意外之財溜走。",
+  "方塊4": "有意外賺錢機會。",
+  "方塊5": "小心被敲詐或借錢。",
+  "方塊6": "眼睜睜看意外之財溜走。",
+  "方塊7": "有意外賺錢機會。",
+  "方塊8": "小心被敲詐或借錢。",
+  "方塊9": "眼睜睜看意外之財溜走。",
+  "方塊10": "有意外賺錢機會。",
+  "方塊J": "眼睜睜看意外之財溜走。",
+  "方塊Q": "小心被敲詐或借錢。",
+  "方塊K": "有意外賺錢機會。",
+  "黑桃A": "小心因探索秘密陷入危機。",
+  "黑桃2": "小心被趁虛而入或推銷員。",
+  "黑桃3": "可能興起壞念頭被怨恨。",
+  "黑桃4": "想陷害別人反害自己。",
+  "黑桃5": "小心被趁虛而入或推銷員。",
+  "黑桃6": "可能興起壞念頭被怨恨。",
+  "黑桃7": "想陷害別人反害自己。",
+  "黑桃8": "小心被趁虛而入或推銷員。",
+  "黑桃9": "可能興起壞念頭被怨恨。",
+  "黑桃10": "想陷害別人反害自己。",
+  "黑桃J": "可能興起壞念頭被怨恨。",
+  "黑桃Q": "小心被趁虛而入或推銷員。",
+  "黑桃K": "想陷害別人反害自己。"
+};
+
+function dailyFortune() {
+  const suits = ["紅心", "方塊", "梅花", "黑桃"];
+  const numbers = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+  let deck = [];
+  suits.forEach(s => numbers.forEach(n => deck.push(`${s}${n}`)));
+  const day = new Date().getDate();
+  for (let i = 0; i < day; i++) deck = shuffle(deck);
+  const card = deck[Math.floor(Math.random() * deck.length)];
+  const suit = card.replace(/\d+|A|J|Q|K/, "");
+  const num = card.replace(/紅心|方塊|梅花|黑桃/, "");
+  const emojiCard = `${suitEmoji[suit]}${num}`;
+  const meaning = dailyMeanings[card] || "今天保持低調，順其自然。";
+  document.getElementById("result").innerText = `每日運勢抽到：${emojiCard}\n${meaning}`;
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+  </script>
+</body>
+</html>

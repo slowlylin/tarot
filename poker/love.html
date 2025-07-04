@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>情路密碼</title>
+  <style>
+    body {
+      background: #000;
+      color: orange;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2em;
+    }
+    button {
+      padding: 0.5em 1em;
+      background: #111;
+      color: orange;
+      border: 1px solid orange;
+      border-radius: 0.5em;
+      cursor: pointer;
+      font-size: 1.2em;
+      margin: 0.5em;
+    }
+    button:hover {
+      background: orange;
+      color: black;
+    }
+    .result {
+      text-align: left;
+      margin-top: 1em;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      white-space: pre-line;
+      line-height: 1.8;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>情路密碼</h1>
+  <button onclick="lovePath()">開始預測</button>
+  <div class="result" id="result"></div>
+
+  <script>
+const suitEmoji = { "紅心": "❤️", "方塊": "♦️", "梅花": "♣️", "黑桃": "♠️" };
+const comboMeaningMap = {
+  "紅心,紅心,紅心,紅心": "你們是非常理想的一對。",
+  "紅心,紅心,紅心,方塊": "你們相當幸福。",
+  "紅心,紅心,紅心,梅花": "你們最好保持純潔友誼。",
+  "紅心,紅心,紅心,黑桃": "你們兩人佳期將至。",
+  "紅心,紅心,方塊,方塊": "你們擁有一份灼熱的愛情。",
+  "紅心,紅心,梅花,梅花": "你們兩人很適合，是理想的情侶。",
+  "紅心,紅心,黑桃,黑桃": "對方沒有你想像中的那麼好。",
+  "紅心,紅心,方塊,梅花": "當心，嫉妒將會破壞你們倆的感情。",
+  "紅心,紅心,方塊,黑桃": "你將出現障礙，必須依靠兩人共同努力突破這個難關。",
+  "紅心,紅心,梅花,黑桃": "最後的衝刺是最重要的，千萬不可以輕易放棄。",
+  "紅心,方塊,方塊,方塊": "你們是相親相愛的一對。",
+  "紅心,梅花,梅花,梅花": "最好能趁早表明你的心跡。",
+  "紅心,黑桃,黑桃,黑桃": "你們這份愛情，還要好好考慮。",
+  "紅心,方塊,方塊,梅花": "糟糕，你的情敵出現了。",
+  "紅心,方塊,方塊,黑桃": "對方將是理想的對象。",
+  "紅心,梅花,梅花,黑桃": "你和他之間無法長時間相處下去。",
+  "紅心,黑桃,黑桃,梅花": "你是不是有什麼重要的事情瞞著他，有隔閡呀。",
+  "紅心,方塊,黑桃,黑桃": "你將碰到更理想的對象。",
+  "紅心,梅花,黑桃,黑桃": "要多多體諒他的心情。",
+  "紅心,方塊,梅花,黑桃": "唉，你實在太多心了。",
+  "方塊,方塊,方塊,方塊": "你會有辦法讓他永遠愛你的。",
+  "方塊,方塊,方塊,梅花": "你們之間可能有誤會。",
+  "方塊,方塊,方塊,黑桃": "你們是理智勝於感情的一對。",
+  "方塊,方塊,梅花,梅花": "你們是一對冤家。",
+  "方塊,方塊,黑桃,黑桃": "你需要更冷靜地去了解對方，千萬不要鬧得太兇。",
+  "方塊,方塊,梅花,黑桃": "你們之間可能有誤會或需要坦誠溝通。",
+  "方塊,梅花,梅花,梅花": "肉體的慾望是不能長久的。",
+  "方塊,黑桃,黑桃,黑桃": "你太畏首畏尾了，必須再積極一點。",
+  "方塊,梅花,梅花,黑桃": "你對他太冷淡了，這不是太好的現象。",
+  "方塊,梅花,黑桃,黑桃": "他已經開始討厭你了。",
+  "梅花,梅花,梅花,梅花": "你的他已經開始變心了。",
+  "梅花,梅花,梅花,黑桃": "大可不必在乎他人的閒言閒語。",
+  "梅花,梅花,黑桃,黑桃": "你們已經到了非得好好談判的地步了。",
+  "梅花,黑桃,黑桃,黑桃": "你要改改脾氣，坦白說或許對你們兩人都好。",
+  "黑桃,黑桃,黑桃,黑桃": "你還是死了這條心吧，你們之間不會有任何結果的。"
+};
+
+function lovePath() {
+  const suits = ["紅心", "方塊", "梅花", "黑桃"];
+  const numbers = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+  let deck = [];
+  suits.forEach(s => numbers.forEach(n => deck.push({ suit: s, num: n }))); 
+  deck = shuffle(deck);
+
+  const ageYou = parseInt(prompt("請輸入你的年齡：", "24")) || 1;
+  const ageOther = parseInt(prompt("請輸入對方年齡：", "24")) || 1;
+
+  const card1 = deck.splice((ageYou - 1) % deck.length, 1)[0];
+  const card2 = deck.splice((ageOther - 1) % deck.length, 1)[0];
+  const ageSum = (ageYou + ageOther) % 10 || 10;
+  const card3 = deck.splice((ageSum - 1) % deck.length, 1)[0];
+  const card4 = deck.splice(Math.floor(Math.random() * deck.length), 1)[0];
+
+  const drawnSuits = [card1.suit, card2.suit, card3.suit, card4.suit].sort().join(",");
+  const normalizedKey = Object.keys(comboMeaningMap).find(key => key.split(",").sort().join(",") === drawnSuits);
+
+  const meaning = normalizedKey ? comboMeaningMap[normalizedKey] : `抽到組合：${drawnSuits}（此組合未明確定義，請參考資料或補充解讀）`;
+
+  const displayCards = [card1, card2, card3, card4].map(c => `${suitEmoji[c.suit]}${c.num}`).join(", ");
+  document.getElementById("result").innerText = `抽到：\n${displayCards}\n${meaning}`;
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+  </script>
+</body>
+</html>

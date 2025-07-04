@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人生預測</title>
+  <style>
+    body {
+      background: #000;
+      color: orange;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2em;
+    }
+    button {
+      padding: 0.5em 1em;
+      background: #111;
+      color: orange;
+      border: 1px solid orange;
+      border-radius: 0.5em;
+      cursor: pointer;
+      font-size: 1.2em;
+      margin: 0.5em;
+    }
+    button:hover {
+      background: orange;
+      color: black;
+    }
+    .result {
+      text-align: left;
+      margin-top: 1em;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      white-space: pre-line;
+      line-height: 1.8;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>近期運勢</h1>
+  <button onclick="lifePrediction()">開始預測</button>
+  <div class="result" id="result"></div>
+
+  <script>
+const meanings = {
+  "♠️A": "商業上的交易、談判都會很順利。",
+  "♠️K": "最近會有喜事。",
+  "♠️Q": "會遇到一個很中意的人。",
+  "♠️J": "沉溺於玩樂會落得身敗名裂。",
+  "♠️10": "生活不安定，又逢意外災難。",
+  "♠️9": "有非常好的屬下和家庭。",
+  "♠️8": "有精神方面的焦慮症。",
+  "♠️7": "會有意想不到的事發生。",
+  "♠️6": "會給別人很好的印象。",
+  "♠️5": "平安無事，但若從事新工作會失敗。",
+  "♠️4": "為糾紛之事十分忙碌。",
+  "♠️3": "過去的事會曝光。",
+  "♠️2": "幸福生活有麻煩介入。",
+  "❤️A": "碰到初戀情人，並舊情復燃。",
+  "❤️K": "會有新朋友。",
+  "❤️Q": "與人合夥事業會成功。",
+  "❤️J": "受長輩提拔嘉獎。",
+  "❤️10": "好運當頭。",
+  "❤️9": "長幼皆信任你。",
+  "❤️8": "戀愛中人必達目的。",
+  "❤️7": "陌生人向你表露愛慕。",
+  "❤️6": "某人暗戀你。",
+  "❤️5": "有人約你。",
+  "❤️4": "會被情人誤會。",
+  "❤️3": "注意掉東西。",
+  "❤️2": "會收到珍貴禮物。",
+  "♦️A": "被麻煩事纏身。",
+  "♦️K": "注意意外事故。",
+  "♦️Q": "受到嫉妒。",
+  "♦️J": "計畫會失敗。",
+  "♦️10": "會遇扒手。",
+  "♦️9": "失去財產。",
+  "♦️8": "被情人厭惡。",
+  "♦️7": "缺錢。",
+  "♦️6": "找到一線希望。",
+  "♦️5": "事與願違。",
+  "♦️4": "和家人疏遠。",
+  "♦️3": "情人背叛你。",
+  "♦️2": "注意生病。",
+  "♣️A": "事情會朝目標發展。",
+  "♣️K": "判斷易出錯。",
+  "♣️Q": "過度干涉別人令人受不了。",
+  "♣️J": "注意忘記或掉落東西。",
+  "♣️10": "財運亨通起頭重要。",
+  "♣️9": "辛苦有代價。",
+  "♣️8": "很需要幫助。",
+  "♣️7": "沒有賭運。",
+  "♣️6": "為失和而苦惱。",
+  "♣️5": "會有好點子。",
+  "♣️4": "發生內訌。",
+  "♣️3": "運氣不好影響健康。",
+  "♣️2": "別計較批評否則受騙。"
+};
+
+function lifePrediction() {
+  const suits = ["❤️", "♦️", "♣️", "♠️"];
+  const numbers = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+  let deck = [];
+  suits.forEach(s => numbers.forEach(n => deck.push({ suit: s, num: n })));
+  deck = shuffle(deck);
+
+  const pile1 = deck.slice(0, Math.ceil(deck.length / 2));
+  const pile2 = deck.slice(Math.ceil(deck.length / 2));
+  const card1 = pile1[0];
+  const card2 = pile2[0];
+  const sum = getCardValue(card1.num) + getCardValue(card2.num);
+
+  deck = shuffle(deck);
+  const keyIndex = (sum <= deck.length) ? sum : sum % deck.length;
+  const keyCard = deck[keyIndex] || deck[deck.length - 1];
+  const meaning = meanings[`${keyCard.suit}${keyCard.num}`] || "請參考資料補充解讀。";
+
+  document.getElementById("result").innerText = `人生預測：\n第一張：${keyCard.suit}${card1.num}\n第二張：${keyCard.suit}${card2.num}\n關鍵牌：${keyCard.suit}${keyCard.num}\n解讀：${meaning}`;
+}
+
+function getCardValue(num) {
+  if (num === "A") return 1;
+  if (num === "J") return 11;
+  if (num === "Q") return 12;
+  if (num === "K") return 13;
+  return parseInt(num);
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+  </script>
+</body>
+</html>
