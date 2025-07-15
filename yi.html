@@ -1,351 +1,179 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>易經占卜</title>
-<style>
-    body {
-      background: url("images/wallpaper.jpg") no-repeat center center fixed;
-      background-size: cover;
-      color: orange;
-      font-family: sans-serif;
-      text-align: center;
-      padding: 2em;
-      margin: 0;
-    }
-    .tarot-button {
-      display: inline-block;
-      background: rgba(0, 0, 0, 0.2);
-      color: orange;
-      border: 1px solid orange;
-      border-radius: 0.5em;
-      padding: 0.5em 1em;
-      margin: 0.5em;
-      max-width: 200px;
-      font-size: 1em;
-      text-decoration: none;
-      transition: background 0.3s, color 0.3s, transform 0.2s;
-    }
-    .tarot-button:hover {
-      background: orange;
-      color: black;
-      transform: scale(1.05);
-      text-decoration: none;
-    }
+  <meta charset="UTF-8" />
+  <title>易經占卜</title>
+  <style>
+body {
+  background: url("images/wallpaper.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: orange;
+  font-family: sans-serif;
+  text-align: center;
+  padding: 2em;
+  margin: 0;
+}
+
+.tarot-button {
+  display: inline-block;
+  background: rgba(17, 17, 17, 0.8); /* 半透明按鈕搭背景圖 */
+  color: orange;
+  border: 1px solid orange;
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  margin: 0.5em;
+  max-width: 200px;
+  font-size: 1em;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+.tarot-button:hover {
+  background: orange;
+  color: black;
+  transform: scale(1.05);
+}
+
 #result {
-  display: none;
   margin-top: 2em;
   font-size: 1.2em;
-  background: none; /* 完全透明 */
   padding: 1em;
   border-radius: 0.5em;
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
   white-space: pre-line;
+  background: none;
+  transition: opacity 0.3s;
 }
 
+.flash {
+  animation: flash 0.6s;
+}
+
+@keyframes flash {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+.sec {
+  font-size: 2em;
+  font-weight: bold;
+}
 
   </style>
 </head>
 <body>
-<h1>易經占卜</h1>
-<p>深呼吸，靜心一下，點擊「開始占卜」以當下時間生成卦象。</p>
-<a class="tarot-button" href="#" onclick="drawYi()">開始占卜</a>
-<div id="result"></div>
-<script>
-    const bagua = {
-      1: { name: "乾", symbol: "☰" },
-      2: { name: "兌", symbol: "☱" },
-      3: { name: "離", symbol: "☲" },
-      4: { name: "震", symbol: "☳" },
-      5: { name: "巽", symbol: "☴" },
-      6: { name: "坎", symbol: "☵" },
-      7: { name: "艮", symbol: "☶" },
-      8: { name: "坤", symbol: "☷" }
-    };
+  <h1>易經占卜</h1>
+  <p>深呼吸，靜心一下，點擊「開始占卜」以當下時間生成卦象。</p>
+  <button onclick="showGua()">開始占卜</button>
 
-const gua64 = {
-{
-  "乾乾": {
-    "name": "乾為天",
-    "desc": "積極進取，萬事可成。持續努力，自能見成果。"
-  },
-  "坤坤": {
-    "name": "坤為地",
-    "desc": "柔順承載，宜穩定守成。順勢而行，萬物生長。"
-  },
-  "乾坤": {
-    "name": "天地否",
-    "desc": "溝通受阻，暫宜守勢。忍耐時機，靜待轉機。"
-  },
-  "坤乾": {
-    "name": "地天泰",
-    "desc": "上下和諧，萬事順利。善用此時機發展計劃。"
-  },
-  "震震": {
-    "name": "震為雷",
-    "desc": "奮發向前，機不可失。適時出手，先聲奪人。"
-  },
-  "巽巽": {
-    "name": "巽為風",
-    "desc": "順勢而為，謙遜處世。靈活應變，事半功倍。"
-  },
-  "坎坎": {
-    "name": "坎為水",
-    "desc": "處境險難，謹慎應對。堅持信念，終得安寧。"
-  },
-  "離離": {
-    "name": "離為火",
-    "desc": "光明璀璨，引領方向。心存正義，自有天助。"
-  },
-  "艮艮": {
-    "name": "艮為山",
-    "desc": "穩重為先，固守根基。勿妄進，耐心自安。"
-  },
-  "兌兌": {
-    "name": "兌為澤",
-    "desc": "喜悅和諧，彼此信任。保持真誠，善用人脈。"
-  },
-  "乾震": {
-    "name": "天雷无妄",
-    "desc": "勿妄動，心存正道。誠實處事，自有吉慶。"
-  },
-  "乾巽": {
-    "name": "天風姤",
-    "desc": "突如其來，需審慎應對。戒躁戒急，靜觀變化。"
-  },
-  "乾坎": {
-    "name": "天水訟",
-    "desc": "紛爭難免，宜理智處之。謹言慎行，以和為貴。"
-  },
-  "乾離": {
-    "name": "天火同人",
-    "desc": "志同道合，共同努力。互助合作，成功可期。"
-  },
-  "乾艮": {
-    "name": "天山遯",
-    "desc": "避其鋒芒，韜光養晦。靜守時機，再圖發展。"
-  },
-  "乾兌": {
-    "name": "天澤履",
-    "desc": "循序漸進，謹慎前行。守正不阿，自能立足。"
-  },
-  "坤震": {
-    "name": "地雷復",
-    "desc": "舊事重來，機會再現。吸取經驗，重新出發。"
-  },
-  "坤巽": {
-    "name": "地風升",
-    "desc": "步步高昇，逐漸進步。謙虛受益，穩健向前。"
-  },
-  "坤坎": {
-    "name": "地水師",
-    "desc": "齊心協力，共御外患。紀律嚴明，方能取勝。"
-  },
-  "坤離": {
-    "name": "地火明夷",
-    "desc": "光明受損，處境艱難。退而養晦，靜待轉機。"
-  },
-  "坤艮": {
-    "name": "地山謙",
-    "desc": "謙虛內斂，厚德載物。廣結善緣，平順無礙。"
-  },
-  "坤兌": {
-    "name": "地澤臨",
-    "desc": "以仁為本，柔順待人。得眾心者，事無不成。"
-  },
-  "震乾": {
-    "name": "雷天大壯",
-    "desc": "機會來臨，大膽行動。切記不可過於衝動。"
-  },
-  "震坤": {
-    "name": "雷地豫",
-    "desc": "機會將近，適時而動。心存謙和，不宜驕躁。"
-  },
-  "震巽": {
-    "name": "雷風恆",
-    "desc": "恆久之道，持續不懈。專注目標，終有成就。"
-  },
-  "震坎": {
-    "name": "雷水解",
-    "desc": "困難有解，貴人相助。善用時機，化險為夷。"
-  },
-  "震離": {
-    "name": "雷火豐",
-    "desc": "繁榮興盛，光明燦爛。持守正道，以防驕矜。"
-  },
-  "震艮": {
-    "name": "雷山小過",
-    "desc": "小事謹慎，大事避讓。柔能克剛，以退為進。"
-  },
-  "震兌": {
-    "name": "雷澤歸妹",
-    "desc": "陰陽和合，適時而行。順應天時，和諧致吉。"
-  },
-  "巽乾": {
-    "name": "風天小畜",
-    "desc": "蓄勢待發，慎守時機。克制慾望，靜待轉機。"
-  },
-  "巽坤": {
-    "name": "風地觀",
-    "desc": "以德服人，謙遜自守。觀察時勢，因應而行。"
-  },
-  "巽震": {
-    "name": "風雷益",
-    "desc": "得天助，事業興旺。心懷善念，廣結善緣。"
-  },
-  "巽坎": {
-    "name": "風水渙",
-    "desc": "危機消解，離散重聚。把握機遇，穩中求進。"
-  },
-  "巽離": {
-    "name": "風火家人",
-    "desc": "以和為貴，家道興隆。內和外順，福祿自來。"
-  },
-  "巽艮": {
-    "name": "風山漸",
-    "desc": "緩步向前，穩中求進。積小成多，終成大業。"
-  },
-  "巽兌": {
-    "name": "風澤中孚",
-    "desc": "誠信為本，獲得信賴。言出必行，方成大事。"
-  },
-  "坎乾": {
-    "name": "水天需",
-    "desc": "耐心等待，有所期盼。慎重決策，穩中求勝。"
-  },
-  "坎坤": {
-    "name": "水地比",
-    "desc": "團結協作，互相扶持。共創佳績，彼此成就。"
-  },
-  "坎震": {
-    "name": "水雷屯",
-    "desc": "萬事起頭難，慎始敬終。耐心等待，逐步開展。"
-  },
-  "坎巽": {
-    "name": "水風井",
-    "desc": "堅守本分，穩中求成。積蓄實力，厚積薄發。"
-  },
-  "坎離": {
-    "name": "水火既濟",
-    "desc": "事情已臻完善，但仍需謹慎收尾。保持清醒，避免後失。"
-  },
-  "坎艮": {
-    "name": "水山蹇",
-    "desc": "困難當前，不宜強行。暫避鋒芒，養精蓄銳。"
-  },
-  "坎兌": {
-    "name": "水澤節",
-    "desc": "適可而止，懂得節制。守中守正，吉祥安泰。"
-  },
-  "離乾": {
-    "name": "火天大有",
-    "desc": "豐收之象，財運亨通。懂得分享，方能持久。"
-  },
-  "離坤": {
-    "name": "火地晉",
-    "desc": "步步高升，欣欣向榮。慎守本心，順勢而行。"
-  },
-  "離震": {
-    "name": "火雷噬嗑",
-    "desc": "剛柔相濟，以正治邪。直面挑戰，剛毅果敢。"
-  },
-  "離巽": {
-    "name": "火風鼎",
-    "desc": "革故鼎新，乘勢而上。善用人力，共創佳績。"
-  },
-  "離坎": {
-    "name": "火水未濟",
-    "desc": "尚未完成，需要耐心。調整方向，再行努力。"
-  },
-  "離艮": {
-    "name": "火山旅",
-    "desc": "居無定所，行事謹慎。保持謙和，以求平安。"
-  },
-  "離兌": {
-    "name": "火澤睽",
-    "desc": "意見分歧，需調和矛盾。誠意溝通，化解爭執。"
-  },
-  "艮乾": {
-    "name": "山天大畜",
-    "desc": "積蓄力量，靜候時機。沉穩應對，終成大器。"
-  },
-  "艮坤": {
-    "name": "山地剝",
-    "desc": "局勢不利，宜退守觀察。去偽存真，方能自保。"
-  },
-  "艮震": {
-    "name": "山雷頤",
-    "desc": "修養身心，以誠養德。謹言慎行，長養正氣。"
-  },
-  "艮巽": {
-    "name": "山風蠱",
-    "desc": "積弊已久，宜速改革。除舊布新，方能安泰。"
-  },
-  "艮坎": {
-    "name": "山水蒙",
-    "desc": "初學之時，虛心求教。謙遜向善，自得進益。"
-  },
-  "艮離": {
-    "name": "山火賁",
-    "desc": "修飾內外，美化形象。內實外美，方顯真章。"
-  },
-  "艮兌": {
-    "name": "山澤損",
-    "desc": "有所舍棄，以求更大。捨小利以成大事。"
-  },
-  "兌乾": {
-    "name": "澤天夬",
-    "desc": "決斷之時，宜果斷行事。堅守原則，方得吉利。"
-  },
-  "兌坤": {
-    "name": "澤地萃",
-    "desc": "人和聚集，眾望所歸。眾志成城，事半功倍。"
-  },
-  "兌震": {
-    "name": "澤雷隨",
-    "desc": "順勢而行，隨機應變。保持彈性，處處得益。"
-  },
-  "兌巽": {
-    "name": "澤風大過",
-    "desc": "事態重大，不可輕忽。謹慎應對，以求安穩。"
-  },
-  "兌坎": {
-    "name": "澤水困",
-    "desc": "陷入困境，宜耐心守正。內強外柔，自求多福。"
-  },
-  "兌離": {
-    "name": "澤火革",
-    "desc": "革新變化，除舊佈新。順應時勢，成就大業。"
-  },
-  "兌艮": {
-    "name": "澤山咸",
-    "desc": "感應天地，內外和諧。真心付出，收穫情感。"
-  }
-  
+  <div id="result">
+    <p id="top"></p>
+    <p id="bottom"></p>
+    <p id="guaName"></p>
+    <p id="guaDesc"></p>
+  </div>
+
+  <script>
+    const guaData = {
+  "乾乾": { name: "乾為天", desc: "積極進取，萬事可成。持續努力，自能見成果。" },
+  "乾坤": { name: "天地否", desc: "溝通受阻，暫宜守勢。忍耐時機，靜待轉機。" },
+  "乾震": { name: "天雷无妄", desc: "勿妄動，心存正道。誠實處事，自有吉慶。" },
+  "乾巽": { name: "天風姤", desc: "突如其來，需審慎應對。戒躁戒急，靜觀變化。" },
+  "乾坎": { name: "天水訟", desc: "紛爭難免，宜理智處之。謹言慎行，以和為貴。" },
+  "乾離": { name: "天火同人", desc: "志同道合，共同努力。互助合作，成功可期。" },
+  "乾艮": { name: "天山遯", desc: "避其鋒芒，韜光養晦。靜守時機，再圖發展。" },
+  "乾兌": { name: "天澤履", desc: "循序漸進，謹慎前行。守正不阿，自能立足。" },
+  "坤乾": { name: "地天泰", desc: "上下和諧，萬事順利。善用此時機發展計劃。" },
+  "坤坤": { name: "坤為地", desc: "柔順承載，宜穩定守成。順勢而行，萬物生長。" },
+  "坤震": { name: "地雷復", desc: "舊事重來，機會再現。吸取經驗，重新出發。" },
+  "坤巽": { name: "地風升", desc: "步步高昇，逐漸進步。謙虛受益，穩健向前。" },
+  "坤坎": { name: "地水師", desc: "齊心協力，共御外患。紀律嚴明，方能取勝。" },
+  "坤離": { name: "地火明夷", desc: "光明受損，處境艱難。退而養晦，靜待轉機。" },
+  "坤艮": { name: "地山謙", desc: "謙虛內斂，厚德載物。廣結善緣，平順無礙。" },
+  "坤兌": { name: "地澤臨", desc: "以仁為本，柔順待人。得眾心者，事無不成。" },
+  "震乾": { name: "雷天大壯", desc: "機會來臨，大膽行動。切記不可過於衝動。" },
+  "震坤": { name: "雷地豫", desc: "機會將近，適時而動。心存謙和，不宜驕躁。" },
+  "震震": { name: "震為雷", desc: "奮發向前，機不可失。適時出手，先聲奪人。" },
+  "震巽": { name: "雷風恆", desc: "恆久之道，持續不懈。專注目標，終有成就。" },
+  "震坎": { name: "雷水解", desc: "困難有解，貴人相助。善用時機，化險為夷。" },
+  "震離": { name: "雷火豐", desc: "繁榮興盛，光明燦爛。持守正道，以防驕矜。" },
+  "震艮": { name: "雷山小過", desc: "小事謹慎，大事避讓。柔能克剛，以退為進。" },
+  "震兌": { name: "雷澤歸妹", desc: "陰陽和合，適時而行。順應天時，和諧致吉。" },
+  "巽乾": { name: "風天小畜", desc: "蓄勢待發，謹慎前行。積小成多，終成大器。" },
+  "巽坤": { name: "風地觀", desc: "觀察入微，審時度勢。洞察先機，善用機會。" },
+  "巽震": { name: "風雷益", desc: "得天助，事業興旺。心懷善念，廣結善緣。" },
+  "巽巽": { name: "巽為風", desc: "順勢而為，謙遜處世。靈活應變，事半功倍。" },
+  "巽坎": { name: "風水渙", desc: "危機消解，離散重聚。把握機遇，穩中求進。" },
+  "巽離": { name: "風火家人", desc: "以和為貴，家道興隆。內和外順，福祿自來。" },
+  "巽艮": { name: "風山漸", desc: "緩步向前，穩中求進。積小成多，終成大業。" },
+  "巽兌": { name: "風澤中孚", desc: "誠信為本，獲得信賴。言出必行，方成大事。" },
+  "坎乾": { name: "水天需", desc: "時機未到，耐心等待。儲備能量，以備一戰。" },
+  "坎坤": { name: "水地比", desc: "團結協作，互相扶持。建立信任，共創未來。" },
+  "坎震": { name: "水雷屯", desc: "萬事起頭難，慎始敬終。耐心等待，逐步開展。" },
+  "坎巽": { name: "水風井", desc: "堅守本分，穩中求成。積蓄實力，厚積薄發。" },
+  "坎坎": { name: "坎為水", desc: "處境險難，謹慎應對。堅持信念，終得安寧。" },
+  "坎離": { name: "水火既濟", desc: "事情已臻完善，但仍需謹慎收尾。保持清醒，避免後失。" },
+  "坎艮": { name: "水山蹇", desc: "困難當前，不宜強行。暫避鋒芒，養精蓄銳。" },
+  "坎兌": { name: "水澤節", desc: "適可而止，懂得節制。守中守正，吉祥安泰。" },
+  "離乾": { name: "火天大有", desc: "大有收穫，順勢而為。保持謙虛，勿自滿。" },
+  "離坤": { name: "火地晉", desc: "逐漸昇進，光明之路。穩健前行，成就可期。" },
+  "離震": { name: "火雷噬嗑", desc: "剛柔相濟，以正治邪。直面挑戰，剛毅果敢。" },
+  "離巽": { name: "火風鼎", desc: "革故鼎新，乘勢而上。善用人力，共創佳績。" },
+  "離坎": { name: "火水未濟", desc: "尚未完成，需要耐心。調整方向，再行努力。" },
+  "離離": { name: "離為火", desc: "光明璀璨，引領方向。心存正義，自有天助。" },
+  "離艮": { name: "火山旅", desc: "居無定所，行事謹慎。保持謙和，以求平安。" },
+  "離兌": { name: "火澤睽", desc: "意見分歧，需調和矛盾。誠意溝通，化解爭執。" },
+  "艮乾": { name: "山天大畜", desc: "積蓄實力，靜待良機。勿急於求成，穩健前行。" },
+  "艮坤": { name: "山地剝", desc: "形勢險峻，須謹慎應對。內守外避，等待轉機。" },
+  "艮震": { name: "山雷頤", desc: "修養身心，以誠養德。謹言慎行，長養正氣。" },
+  "艮巽": { name: "山風蠱", desc: "積弊已久，宜速改革。除舊布新，方能安泰。" },
+  "艮坎": { name: "山水蒙", desc: "初學之時，虛心求教。謙遜向善，自得進益。" },
+  "艮離": { name: "山火賁", desc: "修飾內外，美化形象。內實外美，方顯真章。" },
+  "艮艮": { name: "艮為山", desc: "穩重為先，固守根基。勿妄進，耐心自安。" },
+  "艮兌": { name: "山澤損", desc: "有所舍棄，以求更大。捨小利以成大事。" },
+  "兌乾": { name: "澤天夬", desc: "果斷決策，捨棄糾纏。破釜沉舟，才能前進。" },
+  "兌坤": { name: "澤地萃", desc: "眾志成城，積聚能量。聚人心者，成大業。" },
+  "兌震": { name: "澤雷隨", desc: "順勢而行，隨機應變。保持彈性，處處得益。" },
+  "兌巽": { name: "澤風大過", desc: "事態重大，不可輕忽。謹慎應對，以求安穩。" },
+  "兌坎": { name: "澤水困", desc: "陷入困境，宜耐心守正。內強外柔，自求多福。" },
+  "兌離": { name: "澤火革", desc: "革新變化，除舊佈新。順應時勢，成就大業。" },
+  "兌艮": { name: "澤山咸", desc: "感應天地，內外和諧。真心付出，收穫情感。" },
+  "兌兌": { name: "兌為澤", desc: "喜悅和諧，彼此信任。保持真誠，善用人脈。" }
 };
 
-    function drawYi() {
+
+    const symbols = ["乾", "坤", "震", "巽", "坎", "離", "艮", "兌"];
+    const hexSymbols = {
+      "乾": "☰", "坤": "☷", "震": "☳", "巽": "☴",
+      "坎": "☵", "離": "☲", "艮": "☶", "兌": "☱"
+    };
+
+    function getRandomGua() {
       const now = new Date();
-      let topNum = (now.getMonth() + 1) + now.getDate();
-      let bottomNum = now.getHours() + now.getMinutes();
-      topNum = topNum % 8 === 0 ? 8 : topNum % 8;
-      bottomNum = bottomNum % 8 === 0 ? 8 : bottomNum % 8;
+      const topIndex = now.getSeconds() % 8;
+      const bottomIndex = now.getMilliseconds() % 8;
+      return [symbols[topIndex], symbols[bottomIndex]];
+    }
 
-      const top = bagua[topNum];
-      const bottom = bagua[bottomNum];
-      const key = top.name + bottom.name;
-      const gua = gua64[key] || { name: "未知卦象", desc: "這卦象暫無資料，可自行查閱經典解讀。" };
+    function showGua() {
+      const [top, bottom] = getRandomGua();
+      const key = top + bottom;
+      const gua = guaData[key];
 
-document.getElementById("result").innerHTML = 
-  `上卦：${top.symbol} ${top.name}<br>` +
-  `下卦：${bottom.symbol} ${bottom.name}<br>` +
-  `卦名：${gua.name}<br>` +
-  `卦義：${gua.desc}`;
-document.getElementById("result").style.display = "block";
+      document.getElementById("top").innerText = "上卦：" + hexSymbols[top] + " " + top;
+      document.getElementById("bottom").innerText = "下卦：" + hexSymbols[bottom] + " " + bottom;
+
+      if (gua) {
+        document.getElementById("guaName").innerText = "卦名：" + gua.name;
+        document.getElementById("guaDesc").innerText = "卦義：" + gua.desc;
+      } else {
+        document.getElementById("guaName").innerText = "卦名：資料缺失";
+        document.getElementById("guaDesc").innerText = "卦義：尚未補上解釋。";
+      }
     }
   </script>
 </body>
