@@ -1,0 +1,174 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>新年塔羅・十二宮命運時鐘｜拾光塔羅</title><style>
+:root{--gold:#e8c78d;--ink:#151020;--text:#f6ead8}*{box-sizing:border-box}body{margin:0;color:var(--text);font-family:system-ui,"Noto Sans TC",sans-serif;background:linear-gradient(#100c1cdb,#100c1ce8),url('images/wallpaper.jpg') center/cover fixed;min-height:100vh;text-align:center}header{padding:22px 12px 10px}header a{color:var(--gold);text-decoration:none;font-size:13px}h1{font-family:serif;letter-spacing:.15em;font-weight:500;color:var(--gold);margin:10px 0;font-size:clamp(26px,5vw,40px)}.sub{color:#c4b2ca;font-size:14px;line-height:1.8;margin:0 0 14px}.settings{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center;padding:0 12px 12px}select,input{background:#20172f;color:var(--text);border:1px solid #8e739b;border-radius:8px;padding:8px 12px;font-size:15px}.clock{width:min(96vw,980px);aspect-ratio:1;margin:10px auto 8px;position:relative;border-radius:50%;border:2px solid #b99863;background:radial-gradient(circle,#261a39 0%,#1b152b 43%,#120f22 75%);box-shadow:0 0 0 8px #a88c4530,inset 0 0 70px #08050d,0 20px 70px #0009;overflow:hidden}.clock:before{content:'';position:absolute;inset:8%;border:1px solid #947b5670;border-radius:50%;pointer-events:none}.clock:after{content:'';position:absolute;inset:25%;border:1px dashed #947b5650;border-radius:50%;pointer-events:none}.slot{position:absolute;width:10.5%;height:18%;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.slot{cursor:pointer;z-index:1}.slot:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}.slot.revealed{cursor:default}.slot:not(.revealed):hover .face{border-color:#f7df9f;box-shadow:0 0 16px #e8c78d80}.slot .label{white-space:nowrap;font-size:clamp(9px,1.2vw,13px);color:var(--gold);font-weight:650;line-height:1.25;text-shadow:0 1px 4px #000}.slot .face{width:76%;aspect-ratio: .59;background:linear-gradient(145deg,#36264e,#1a1428);border:1px solid #a8895e;border-radius:3px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px #0008;overflow:hidden}.slot .face img{display:block;width:100%;height:100%;object-fit:fill}.slot .face .back{font-size:clamp(15px,3vw,29px);color:#cba971}.slot .name{max-width:140%;overflow:visible;font-size:clamp(8px,1vw,11px);line-height:1.15;color:#fff2df;text-shadow:0 1px 4px #000;white-space:nowrap}.center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:35%;pointer-events:none}.center .year{font-size:clamp(24px,5vw,47px);color:var(--gold);font-family:Georgia,serif}.center .status{font-size:clamp(10px,1.8vw,14px);color:#dbc8de;line-height:1.5}.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:10px 12px 15px}button{border:1px solid var(--gold);background:linear-gradient(130deg,#735332,#3a2445);color:#fff2dd;padding:12px 22px;border-radius:30px;cursor:pointer;font-size:16px}button:disabled{opacity:.4;cursor:default}.secondary{background:#21182e}.notice{font-size:13px;color:#d5c2dc;padding:0 16px 15px}.results{max-width:840px;margin:20px auto 45px;padding:0 18px;text-align:left}.results h2{color:var(--gold);font-size:19px;font-weight:500}.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.result{border:1px solid #77608070;background:#241b33bb;padding:9px;border-radius:7px;font-size:13px}.result b{color:var(--gold)}.result span{display:block;margin-top:4px}#toast{min-height:24px;color:var(--gold)}@media(max-width:520px){.slot{width:11.5%;height:18%}.slot .face{width:76%}.slot{cursor:pointer;z-index:1}.slot:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}.slot.revealed{cursor:default}.slot:not(.revealed):hover .face{border-color:#f7df9f;box-shadow:0 0 16px #e8c78d80}.slot .label{white-space:nowrap;font-size:9px}.slot .name{max-width:140%;overflow:visible;font-size:8px}.results-grid{grid-template-columns:repeat(2,1fr)}.clock{width:98vw}.settings{font-size:13px}}@media(prefers-reduced-motion:no-preference){.slot .face{transition:transform .3s}.slot.revealed .face{animation:reveal .45s ease}@keyframes reveal{from{transform:scaleX(0)}to{transform:scaleX(1)}}}
+
+.ritual{max-width:690px;margin:22px auto 16px;padding:28px 22px;border:1px solid #ae8c5b;border-radius:22px;background:radial-gradient(circle at top,#3b284f,#1a1329 78%);box-shadow:0 15px 45px #0007}
+.ritual h2{color:var(--gold);font-family:serif;font-size:clamp(25px,4vw,36px);font-weight:500;letter-spacing:.12em;margin:10px 0}.ritual p{line-height:1.9;color:#e4d6e6}.ritual .step{color:var(--gold);font-size:13px;letter-spacing:.15em}.ritual .deckview{height:150px;display:flex;justify-content:center;align-items:center;position:relative;margin:16px auto}.ritual .ritual-card{width:82px;height:128px;border:1px solid #d2ae73;border-radius:7px;background:linear-gradient(140deg,#5a3974,#261634);box-shadow:0 7px 17px #0009;display:grid;place-items:center;color:#e9c78a;font-size:37px;position:absolute;transition:transform .45s ease}.ritual .ritual-card:nth-child(1){transform:translateX(-27px) rotate(-10deg)}.ritual .ritual-card:nth-child(2){transform:translateX(0) rotate(0)}.ritual .ritual-card:nth-child(3){transform:translateX(27px) rotate(10deg)}.ritual .deckview.shuffling .ritual-card:nth-child(1){transform:translateX(70px) rotate(18deg)}.ritual .deckview.shuffling .ritual-card:nth-child(2){transform:translateX(-60px) rotate(-15deg)}.ritual .deckview.shuffling .ritual-card:nth-child(3){transform:translateX(0) rotate(2deg)}.ritual .deckview.cutting .ritual-card:nth-child(1){transform:translate(-55px,-22px) rotate(-7deg)}.ritual .deckview.cutting .ritual-card:nth-child(2){transform:translate(58px,15px) rotate(7deg)}.ritual .deckview.cutting .ritual-card:nth-child(3){transform:translate(0,0)}.ritual .actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:12px}.ritual .hint{font-size:13px;color:#c5b0cb;min-height:24px}.ritual .cutoptions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.ritual .cutoptions button{min-width:100px}.ritual button{min-width:130px}.ritual[hidden],.clock[hidden],.controls[hidden],.notice[hidden],.results[hidden]{display:none!important}
+</style></head><body><header><a href="index.html">← 返回拾光塔羅首頁</a><h1>✦ 新年塔羅・命運時鐘 ✦</h1><p class="sub">先靜心、洗牌、切牌，再親手翻開十二個宮位。<br>跟隨自己的節奏，迎接新的一年。</p></header><div class="settings"><label>牌陣 <select id="mode"><option value="house">十二宮位</option><option value="month">十二月份</option></select></label><label>年度 <input id="year" type="number" min="2000" max="2100" value="2027" style="width:95px"></label></div><section class="ritual" id="ritual" aria-live="polite"><div class="step" id="ritualStep">第一步 · 靜心</div><h2 id="ritualTitle">讓心慢慢安靜</h2><p id="ritualText">調整坐姿，緩緩吸氣，再慢慢吐氣。<br>將注意力放在即將到來的新一年。準備好了，再繼續。</p><div class="deckview" id="deckview" aria-hidden="true"><div class="ritual-card">✧</div><div class="ritual-card">✧</div><div class="ritual-card">✧</div></div><div class="cutoptions" id="cutoptions" hidden></div><div class="actions"><button id="ritualMain">我準備好了</button><button id="ritualNext" class="secondary" hidden>完成洗牌，準備切牌</button></div><p class="hint" id="ritualHint"></p></section><div class="clock" id="clock" hidden><div class="center"><div class="year" id="clockyear">2027</div><div class="status" id="status">準備抽取<br>第一張牌</div></div></div><div class="controls" id="controls" hidden><button id="copy" class="secondary" disabled>複製抽牌紀錄</button><button id="reset" class="secondary">重新開始</button></div><p class="notice" id="notice" hidden>直接點擊圓盤上尚未翻開的宮位，每次只抽一張。78 張牌不重複，正逆位隨機決定。<br>完成後複製十二張牌的文字紀錄，傳給占卜師解讀。</p><div id="toast" role="status" aria-live="polite"></div><section class="results" id="resultSection" hidden><h2>抽牌紀錄</h2><div class="results-grid" id="results"></div></section>
+<script>
+const tarotDeck=[
+  { file: "images/tarot/00.jpg", name: "愚者" },
+  { file: "images/tarot/01.jpg", name: "魔術師" },
+  { file: "images/tarot/02.jpg", name: "女祭司" },
+  { file: "images/tarot/03.jpg", name: "女皇" },
+  { file: "images/tarot/04.jpg", name: "皇帝" },
+  { file: "images/tarot/05.jpg", name: "教皇" },
+  { file: "images/tarot/06.jpg", name: "戀人" },
+  { file: "images/tarot/07.jpg", name: "戰車" },
+  { file: "images/tarot/08.jpg", name: "力量" },
+  { file: "images/tarot/09.jpg", name: "隱者" },
+  { file: "images/tarot/10.jpg", name: "命運之輪" },
+  { file: "images/tarot/11.jpg", name: "正義" },
+  { file: "images/tarot/12.jpg", name: "倒吊人" },
+  { file: "images/tarot/13.jpg", name: "死神" },
+  { file: "images/tarot/14.jpg", name: "節制" },
+  { file: "images/tarot/15.jpg", name: "惡魔" },
+  { file: "images/tarot/16.jpg", name: "高塔" },
+  { file: "images/tarot/17.jpg", name: "星星" },
+  { file: "images/tarot/18.jpg", name: "月亮" },
+  { file: "images/tarot/19.jpg", name: "太陽" },
+  { file: "images/tarot/20.jpg", name: "審判" },
+  { file: "images/tarot/21.jpg", name: "世界" },
+
+  // 聖杯
+  { file: "images/tarot/Cups01.jpg", name: "聖杯一" },
+  { file: "images/tarot/Cups02.jpg", name: "聖杯二" },
+  { file: "images/tarot/Cups03.jpg", name: "聖杯三" },
+  { file: "images/tarot/Cups04.jpg", name: "聖杯四" },
+  { file: "images/tarot/Cups05.jpg", name: "聖杯五" },
+  { file: "images/tarot/Cups06.jpg", name: "聖杯六" },
+  { file: "images/tarot/Cups07.jpg", name: "聖杯七" },
+  { file: "images/tarot/Cups08.jpg", name: "聖杯八" },
+  { file: "images/tarot/Cups09.jpg", name: "聖杯九" },
+  { file: "images/tarot/Cups10.jpg", name: "聖杯十" },
+  { file: "images/tarot/Cups11.jpg", name: "聖杯侍者" },
+  { file: "images/tarot/Cups12.jpg", name: "聖杯騎士" },
+  { file: "images/tarot/Cups13.jpg", name: "聖杯皇后" },
+  { file: "images/tarot/Cups14.jpg", name: "聖杯國王" },
+
+  // 錢幣
+  { file: "images/tarot/Pents01.jpg", name: "錢幣一" },
+  { file: "images/tarot/Pents02.jpg", name: "錢幣二" },
+  { file: "images/tarot/Pents03.jpg", name: "錢幣三" },
+  { file: "images/tarot/Pents04.jpg", name: "錢幣四" },
+  { file: "images/tarot/Pents05.jpg", name: "錢幣五" },
+  { file: "images/tarot/Pents06.jpg", name: "錢幣六" },
+  { file: "images/tarot/Pents07.jpg", name: "錢幣七" },
+  { file: "images/tarot/Pents08.jpg", name: "錢幣八" },
+  { file: "images/tarot/Pents09.jpg", name: "錢幣九" },
+  { file: "images/tarot/Pents10.jpg", name: "錢幣十" },
+  { file: "images/tarot/Pents11.jpg", name: "錢幣侍者" },
+  { file: "images/tarot/Pents12.jpg", name: "錢幣騎士" },
+  { file: "images/tarot/Pents13.jpg", name: "錢幣皇后" },
+  { file: "images/tarot/Pents14.jpg", name: "錢幣國王" },
+
+  // 寶劍
+  { file: "images/tarot/Swords01.jpg", name: "寶劍一" },
+  { file: "images/tarot/Swords02.jpg", name: "寶劍二" },
+  { file: "images/tarot/Swords03.jpg", name: "寶劍三" },
+  { file: "images/tarot/Swords04.jpg", name: "寶劍四" },
+  { file: "images/tarot/Swords05.jpg", name: "寶劍五" },
+  { file: "images/tarot/Swords06.jpg", name: "寶劍六" },
+  { file: "images/tarot/Swords07.jpg", name: "寶劍七" },
+  { file: "images/tarot/Swords08.jpg", name: "寶劍八" },
+  { file: "images/tarot/Swords09.jpg", name: "寶劍九" },
+  { file: "images/tarot/Swords10.jpg", name: "寶劍十" },
+  { file: "images/tarot/Swords11.jpg", name: "寶劍侍者" },
+  { file: "images/tarot/Swords12.jpg", name: "寶劍騎士" },
+  { file: "images/tarot/Swords13.jpg", name: "寶劍皇后" },
+  { file: "images/tarot/Swords14.jpg", name: "寶劍國王" },
+
+  // 權杖
+  { file: "images/tarot/Wands01.jpg", name: "權杖一" },
+  { file: "images/tarot/Wands02.jpg", name: "權杖二" },
+  { file: "images/tarot/Wands03.jpg", name: "權杖三" },
+  { file: "images/tarot/Wands04.jpg", name: "權杖四" },
+  { file: "images/tarot/Wands05.jpg", name: "權杖五" },
+  { file: "images/tarot/Wands06.jpg", name: "權杖六" },
+  { file: "images/tarot/Wands07.jpg", name: "權杖七" },
+  { file: "images/tarot/Wands08.jpg", name: "權杖八" },
+  { file: "images/tarot/Wands09.jpg", name: "權杖九" },
+  { file: "images/tarot/Wands10.jpg", name: "權杖十" },
+  { file: "images/tarot/Wands11.jpg", name: "權杖侍者" },
+  { file: "images/tarot/Wands12.jpg", name: "權杖騎士" },
+  { file: "images/tarot/Wands13.jpg", name: "權杖皇后" },
+  { file: "images/tarot/Wands14.jpg", name: "權杖國王" }
+];
+const houses=['自我','財帛','溝通','家庭','戀愛','日常','伴侶','共享資源','遠行','事業','社群','內在'];
+const months=['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+const clock=document.getElementById('clock'),mode=document.getElementById('mode'),year=document.getElementById('year'),copyBtn=document.getElementById('copy'),resetBtn=document.getElementById('reset'),status=document.getElementById('status'),results=document.getElementById('results'),toast=document.getElementById('toast');
+let picks=[],deck=[],ritualPhase=0,shuffleCount=0;
+const ritual=document.getElementById('ritual'),ritualStep=document.getElementById('ritualStep'),ritualTitle=document.getElementById('ritualTitle'),ritualText=document.getElementById('ritualText'),deckview=document.getElementById('deckview'),ritualMain=document.getElementById('ritualMain'),ritualNext=document.getElementById('ritualNext'),cutoptions=document.getElementById('cutoptions'),ritualHint=document.getElementById('ritualHint');
+function shuffleDeck(){for(let i=deck.length-1;i>0;i--){let j=rnd(i+1);[deck[i],deck[j]]=[deck[j],deck[i]];}}
+function showRitual(phase){
+ ritualPhase=phase;ritual.hidden=false;clock.hidden=true;document.getElementById('controls').hidden=true;document.getElementById('notice').hidden=true;document.getElementById('resultSection').hidden=true;
+ ritualNext.hidden=true;cutoptions.hidden=true;ritualMain.hidden=false;deckview.className='deckview';
+ if(phase===0){ritualStep.textContent='第一步 · 靜心';ritualTitle.textContent='讓心慢慢安靜';ritualText.innerHTML='調整坐姿，緩緩吸氣，再慢慢吐氣。<br>將注意力放在即將到來的新一年。準備好了，再繼續。';ritualMain.textContent='我準備好了';ritualHint.textContent='沒有時間限制，依自己的節奏即可。';}
+ if(phase===1){ritualStep.textContent='第二步 · 洗牌';ritualTitle.textContent='將心意交給牌組';ritualText.innerHTML='想著這一年的方向，輕觸下方按鈕洗牌。<br>想洗幾次都可以，直到覺得剛剛好。';ritualMain.textContent='✦ 洗牌';ritualNext.hidden=false;ritualHint.textContent='已洗牌 '+shuffleCount+' 次';}
+ if(phase===2){ritualStep.textContent='第三步 · 切牌';ritualTitle.textContent='親手切開命運的牌組';ritualText.innerHTML='依直覺選擇切牌位置。<br>完成切牌後，十二宮的命運時鐘就會開啟。';ritualMain.hidden=true;cutoptions.hidden=false;cutoptions.replaceChildren();['左側','中央','右側'].forEach((label,i)=>{let b=document.createElement('button');b.textContent=label;b.className='secondary';b.addEventListener('click',()=>cutDeck([.25,.5,.75][i]));cutoptions.append(b)});ritualHint.textContent='請選擇一個位置';deckview.classList.add('cutting');}
+}
+function cutDeck(ratio){let at=Math.max(1,Math.min(deck.length-1,Math.round(deck.length*ratio)));deck=[...deck.slice(at),...deck.slice(0,at)];ritual.hidden=true;clock.hidden=false;document.getElementById('controls').hidden=false;document.getElementById('notice').hidden=false;document.getElementById('resultSection').hidden=false;render();}
+ritualMain.addEventListener('click',()=>{if(ritualPhase===0){showRitual(1)}else if(ritualPhase===1){shuffleDeck();shuffleCount++;deckview.classList.toggle('shuffling');ritualHint.textContent='已洗牌 '+shuffleCount+' 次';}});
+ritualNext.addEventListener('click',()=>showRitual(2));
+const labels=()=>mode.value==='house'?houses:months;const rnd=n=>Math.floor(Math.random()*n);
+function freshDeck(){deck=tarotDeck.map((c,i)=>({...c,id:i}));for(let i=deck.length-1;i>0;i--){let j=rnd(i+1);[deck[i],deck[j]]=[deck[j],deck[i]];}}
+function countPicks(){return picks.filter(Boolean).length;}
+function reveal(i){
+  if(picks[i] || countPicks()>=12)return;
+  const card=deck.pop();
+  card.reversed=Math.random()<.5;
+  picks[i]=card;
+  render();
+}
+function render(){
+  clock.querySelectorAll('.slot').forEach(e=>e.remove());
+  document.getElementById('clockyear').textContent=year.value||'新年';
+  const l=labels(), count=countPicks();
+  l.forEach((label,i)=>{
+    const angle=(i*30-90)*Math.PI/180;
+    const x=50+40*Math.cos(angle),y=50+40*Math.sin(angle);
+    const s=document.createElement('div');
+    s.className='slot'+(picks[i]?' revealed':'');
+    s.style.left=x+'%';s.style.top=y+'%';
+    s.setAttribute('role','button');
+    s.tabIndex=picks[i]?-1:0;
+    s.setAttribute('aria-label',(i+1)+' '+label+(picks[i]?'，已翻開 '+picks[i].name:'，點擊抽牌'));
+    const t=document.createElement('div');t.className='label';t.textContent=(i+1)+' · '+label;s.append(t);
+    const f=document.createElement('div');f.className='face';
+    if(picks[i]){
+      const img=document.createElement('img');img.src=picks[i].file;img.alt=picks[i].name;
+      img.style.transform=picks[i].reversed?'rotate(180deg)':'none';f.append(img);
+    }else{
+      const back=document.createElement('span');back.className='back';back.textContent='✧';f.append(back);
+    }
+    s.append(f);
+    const n=document.createElement('div');n.className='name';
+    n.textContent=picks[i]?picks[i].name+(picks[i].reversed?'逆':'正'):'點擊翻牌';s.append(n);
+    if(!picks[i]){
+      s.addEventListener('click',()=>reveal(i));
+      s.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();reveal(i)}});
+    }
+    clock.append(s);
+  });
+  results.replaceChildren();
+  picks.forEach((p,i)=>{
+    if(!p)return;
+    const d=document.createElement('div');d.className='result';
+    const b=document.createElement('b');b.textContent=(i+1)+' · '+l[i];
+    const t=document.createElement('span');t.textContent=p.name+'・'+(p.reversed?'逆位':'正位');
+    d.append(b,t);results.append(d);
+  });
+  status.innerHTML=count===12?'十二張牌<br>全部完成':'已抽 '+count+' / 12 張<br>點擊宮位翻牌';
+  copyBtn.disabled=count!==12;
+  mode.disabled=year.disabled=count>0;
+}
+function reset(){picks=Array(12).fill(null);freshDeck();shuffleCount=0;render();showRitual(0);toast.textContent='';}
+resetBtn.addEventListener('click',()=>{if(countPicks()&&!confirm('確定要清除目前抽到的牌，重新開始嗎？'))return;reset()});
+mode.addEventListener('change',reset);year.addEventListener('change',render);
+function record(){
+  return '拾光塔羅｜'+year.value+' 新年'+(mode.value==='house'?'十二宮位':'十二月份')+'\n'
+    +'抽牌日期：'+new Date().toLocaleDateString('zh-TW')+'\n'
+    +picks.map((p,i)=>(i+1)+'. '+labels()[i]+'：'+p.name+'・'+(p.reversed?'逆位':'正位')).join('\n');
+}
+copyBtn.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(record());toast.textContent='已複製十二張牌面紀錄';}catch(e){let a=document.createElement('textarea');a.value=record();document.body.append(a);a.select();document.execCommand('copy');a.remove();toast.textContent='已複製牌面紀錄';}});
+reset();
+</script></body></html>
